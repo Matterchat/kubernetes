@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: matterchat-api-svc
+  namespace: matterchat
+  labels:
+    app: matterchat-api
+spec:
+  ports:
+    - port: 80
+      targetPort: 5001
+      protocol: TCP
+  selector:
+    app: matterchat-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matterchat-api
+  namespace: matterchat
+  labels:
+    app: matterchat-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: matterchat-api
+  template:
+    metadata:
+      labels:
+        app: matterchat-api
+    spec:
+      containers:
+        - name: api
+          image: registry.cloud.martinpetr.dev/matterchat/api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5001
+              name: http
+          envFrom:
+            - configMapRef:
+                name: matterchat-config
+            - secretRef:
+                name: matterchat-secrets
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 15
+            periodSeconds: 20

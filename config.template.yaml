@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matterchat-config
+  namespace: matterchat
+data:
+  KEYCLOAK_CLIENT_ID: "${KEYCLOAK_CLIENT_ID}"
+  KEYCLOAK_ISSUER: "${KEYCLOAK_ISSUER}"
+  URLS_REDIS: "${URLS_REDIS}"
+  URLS_API: "${URLS_API}"
+  URLS_GATEWAY: "${URLS_GATEWAY}"
+  LIVEKIT_URL: "${LIVEKIT_URL}"
+  AUTH_URL: "${AUTH_URL}"
+  AUTH_TRUST_HOST: "${AUTH_TRUST_HOST}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: matterchat-secrets
+  namespace: matterchat
+type: Opaque
+data:
+  DATABASE_URL: "${DATABASE_URL_BASE64}"
+  KEYCLOAK_CLIENT_SECRET: "${KEYCLOAK_CLIENT_SECRET_BASE64}"
+  POSTGRES_PASSWORD: "${POSTGRES_PASSWORD_BASE64}"
+  AUTH_SECRET: "${AUTH_SECRET_BASE64}"
+  LIVEKIT_KEYS: "${LIVEKIT_KEYS_BASE64}"

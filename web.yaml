@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: matterchat-web-svc
+  namespace: matterchat
+  labels:
+    app: matterchat-web
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: matterchat-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matterchat-web
+  namespace: matterchat
+  labels:
+    app: matterchat-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: matterchat-web
+  template:
+    metadata:
+      labels:
+        app: matterchat-web
+    spec:
+      containers:
+        - name: web
+          image: registry.cloud.martinpetr.dev/matterchat/web:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: matterchat-config
+            - secretRef:
+                name: matterchat-secrets
+          env:
+            - name: PORT
+              value: "3000"
+            - name: AUTH_TRUST_HOST
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20

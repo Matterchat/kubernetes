@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: matterchat-db-migrate
+  namespace: matterchat
+  labels:
+    app: matterchat-db-migrate
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: matterchat-db-migrate
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: migrate
+          image: registry.cloud.martinpetr.dev/matterchat/db-migration:latest
+          envFrom:
+            - configMapRef:
+                name: matterchat-config
+            - secretRef:
+                name: matterchat-secrets
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

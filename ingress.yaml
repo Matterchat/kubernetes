@@ -1,0 +1,113 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: matterchat-web-ingress
+  namespace: matterchat
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`matterchat.martinpetr.dev`)
+      kind: Rule
+      services:
+        - name: matterchat-web-svc
+          port: 80
+  tls:
+    certResolver: cloudflare
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: matterchat-api-ingress
+  namespace: matterchat
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`api.matterchat.martinpetr.dev`)
+      kind: Rule
+      services:
+        - name: matterchat-api-svc
+          port: 80
+  tls:
+    certResolver: cloudflare
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: matterchat-gateway-ingress
+  namespace: matterchat
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`gateway.matterchat.martinpetr.dev`)
+      kind: Rule
+      services:
+        - name: matterchat-gateway-svc
+          port: 80
+  tls:
+    certResolver: cloudflare
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: livekit-ingress
+  namespace: matterchat
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`livekit.matterchat.martinpetr.dev`)
+      kind: Rule
+      services:
+        - name: livekit-svc
+          port: 7880
+  tls:
+    certResolver: cloudflare
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: livekit-turn-ingress
+  namespace: matterchat
+spec:
+  entryPoints:
+    - turn-tcp
+  routes:
+    - match: HostSNI(`livekit.matterchat.martinpetr.dev`)
+      services:
+        - name: livekit-svc
+          port: 7881
+  tls:
+    certResolver: cloudflare
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  name: livekit-rtc-ingress
+  namespace: matterchat
+spec:
+  entryPoints:
+    - rtc-udp
+  routes:
+    - services:
+        - name: livekit-svc
+          port: 7882
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: matterchat-web-ingress
+  namespace: matterchat
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`matterchat.martinpetr.dev`)
+      kind: Rule
+      services:
+        - name: matterchat-web-svc
+          port: 80
+  tls:
+    certResolver: cloudflare
