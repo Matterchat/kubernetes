@@ -16,7 +16,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: migrate
-          image: registry.cloud.martinpetr.dev/matterchat/db-migration:sha-a19cfc4
+          image: registry.cloud.martinpetr.dev/matterchat/db-migration:sha-9eb2d41
           envFrom:
             - configMapRef:
                 name: matterchat-config
