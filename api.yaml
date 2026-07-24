@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.cloud.martinpetr.dev/matterchat/api:latest
+          image: registry.cloud.martinpetr.dev/matterchat/api:sha-a19cfc4
           imagePullPolicy: Always
           ports:
             - containerPort: 5001

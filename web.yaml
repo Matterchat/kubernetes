@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: registry.cloud.martinpetr.dev/matterchat/web:latest
+          image: registry.cloud.martinpetr.dev/matterchat/web:sha-a19cfc4
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
