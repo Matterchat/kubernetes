@@ -12,3 +12,4 @@ resources:
   - web.yaml
   - ingress.yaml
   - migration-job.yaml
+  - rbac.yaml

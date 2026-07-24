@@ -30,6 +30,16 @@ spec:
       labels:
         app: matterchat-api
     spec:
+      serviceAccountName: matterchat-app-sa
+      initContainers:
+        - name: wait-for-migration
+          image: bitnami/kubectl:latest
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for database migration job to complete..."
+              kubectl wait --namespace=matterchat --for=condition=complete --timeout=300s job/matterchat-db-migrate
       containers:
         - name: api
           image: registry.cloud.martinpetr.dev/matterchat/api:sha-a19cfc4
