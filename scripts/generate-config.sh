@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd "$(dirname "$0")"
+cd ..
 
 # Load env variables from .env file
 if [ -f .env ]; then
@@ -16,6 +17,10 @@ export KEYCLOAK_CLIENT_SECRET_BASE64=$(echo -n "$KEYCLOAK_CLIENT_SECRET" | base6
 export POSTGRES_PASSWORD_BASE64=$(echo -n "$POSTGRES_PASSWORD" | base64 -w 0)
 export AUTH_SECRET_BASE64=$(echo -n "$AUTH_SECRET" | base64 -w 0)
 export LIVEKIT_KEYS_BASE64=$(echo -n "${LIVEKIT_API_KEY}: ${LIVEKIT_API_SECRET}" | base64 -w 0)
+export MINIO_ROOT_USER_BASE64=$(echo -n "$MINIO_ROOT_USER" | base64 -w 0)
+export MINIO_ROOT_PASSWORD_BASE64=$(echo -n "$MINIO_ROOT_PASSWORD" | base64 -w 0)
+export S3_ACCESS_KEY_BASE64=$(echo -n "$S3_ACCESS_KEY" | base64 -w 0)
+export S3_SECRET_KEY_BASE64=$(echo -n "$S3_SECRET_KEY" | base64 -w 0)
 
 # Generate config.yaml from the template using envsubst
 if command -v envsubst >/dev/null 2>&1; then

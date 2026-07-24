@@ -98,16 +98,16 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: matterchat-web-ingress
+  name: minio-s3-ingress
   namespace: matterchat
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`matterchat.martinpetr.dev`)
+    - match: Host(`s3.matterchat.martinpetr.dev`)
       kind: Rule
       services:
-        - name: matterchat-web-svc
-          port: 80
+        - name: minio-svc
+          port: 9000
   tls:
     certResolver: cloudflare
