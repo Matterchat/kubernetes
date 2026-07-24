@@ -42,7 +42,7 @@ spec:
               kubectl wait --namespace=matterchat --for=condition=complete --timeout=300s job/matterchat-db-migrate
       containers:
         - name: api
-          image: registry.cloud.martinpetr.dev/matterchat/api:sha-9eb2d41
+          image: registry.cloud.martinpetr.dev/matterchat/api:sha-37f46bc
           imagePullPolicy: Always
           ports:
             - containerPort: 5001
